@@ -61,7 +61,34 @@ def generate_ascii():
         # 1. Increased font-weight to bold to fill out text spaces.
         # 2. Set line-height to 0.85 to squeeze lines together, removing background gap lines.
         # 3. Adjusted letter-spacing to prevent letters from drifting apart horizontally.
-        return result
+        html_template = """
+        <html>
+        <head>
+            <title>High Contrast ASCII Art</title>
+            <style>
+                body { 
+                    background-color: #050505; 
+                    color: #00ff66; 
+                    font-family: 'Courier New', Courier, monospace; 
+                    padding: 20px; 
+                    display: flex;
+                    justify-content: center;
+                }
+                pre { 
+                    font-size: 7px; 
+                    line-height: 0.85; 
+                    letter-spacing: -1px; 
+                    font-weight: bold;
+                    white-space: pre; 
+                }
+            </style>
+        </head>
+        <body>
+            <pre>{{ art }}</pre>
+        </body>
+        </html>
+        """
+        return render_template_string(html_template, art=result)
 
     except Exception as e:
         return f"Error processing image: {str(e)}", 400
