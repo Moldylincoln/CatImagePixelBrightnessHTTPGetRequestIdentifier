@@ -23,25 +23,37 @@ def convert_to_grayscale(image):
 
 @app.route("/")
 def generate_ascii():
-    # Dynamic URL fallback to a sample image if none is provided in the query string
-    url = request.args.get(
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ_iJ0hDHRx0YhaUqvcqC1cExS4SRCCgcP5g&s", "https://picsum.photos"
-    )  # Generates a random image
+    # 1. Fallback url if none is provided in the query string
+    default_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ_iJ0hDHRx0YhaUqvcqC1cExS4SRCCgcP5g&s"
+    url = request.args.get("url", default_url)
+
+    # 2. Add a User-Agent header so Google knows we are trying to view the image
+    browser_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
 
     try:
-        # 1. Fetch image
-        response = requests.get(url, timeout=10)
+        # 3. Fetch image using the fake browser headers
+        response = requests.get(url, headers=browser_headers, timeout=10)
+
+        # Check if the website actually returned a valid successful request
+        if response.status_code != 200:
+            return (
+                f"Website blocked us or image missing. Status code: {response.status_code}",
+                400,
+            )
+
         img = Image.open(BytesIO(response.content))
 
-        # 2. Process image
+        # 4. Process image
         img = scale_image(img, new_width=120)
         img = convert_to_grayscale(img)
 
-        # 3. Map pixels to characters
+        # 5. Map pixels to characters
         pixels = img.getdata()
         ascii_str = "".join([ASCII_CHARS[pixel // 4] for pixel in pixels])
 
-        # 4. Split into lines based on image width
+        # 6. Split into lines
         img_width = img.width
         ascii_img = [
             ascii_str[index : index + img_width]
@@ -49,7 +61,7 @@ def generate_ascii():
         ]
         result = "\n".join(ascii_img)
 
-        # 5. Render inside HTML pre tags with a clean dark theme for presentation
+        # 7. Render inside HTML pre tags
         html_template = """
         <html>
         <head>
