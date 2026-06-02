@@ -24,8 +24,8 @@ def convert_to_grayscale(image):
 @app.route("/")
 def generate_ascii():
     # 1. Fallback url if none is provided in the query string
-    default_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ_iJ0hDHRx0YhaUqvcqC1cExS4SRCCgcP5g&s"
-    url = request.args.get("url", default_url)
+    default_url = "https://picsum.photos/200/300" #random when not found
+    url = request.args.get("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ_iJ0hDHRx0YhaUqvcqC1cExS4SRCCgcP5g&s", default_url)
 
     # 2. Add a User-Agent header so Google knows we are trying to view the image
     browser_headers = {
