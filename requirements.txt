@@ -1,2 +1,4 @@
+Flask
 pillow
 requests
+gunicorn
