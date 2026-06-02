@@ -10,7 +10,7 @@ app = Flask(__name__)
 # IMPROVED PALETTE: Fewer gradients make the shapes pop instantly instead of looking muddy
 ASCII_CHARS = "@M80GCit:,. "
 
-def scale_image(image, new_width=160): # Increased resolution from 120 to 160 for more details
+def scale_image(image, new_width=40): # Increased resolution from 120 to 160 for more details
     original_width, original_height = image.size
     aspect_ratio = original_height / float(original_width)
     # Changed 0.55 to 0.45 to squash characters and prevent vertical image stretching
