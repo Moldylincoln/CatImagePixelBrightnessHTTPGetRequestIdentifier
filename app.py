@@ -25,7 +25,7 @@ def convert_to_grayscale(image):
 def generate_ascii():
     # Dynamic URL fallback to a sample image if none is provided in the query string
     url = request.args.get(
-        "url", "https://picsum.photos"
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ_iJ0hDHRx0YhaUqvcqC1cExS4SRCCgcP5g&s", "https://picsum.photos"
     )  # Generates a random image
 
     try:
